@@ -5,7 +5,7 @@ type Service interface {
 	WriteZone(zone Zone, create bool) error
 	DeleteZone(zone Zone) error
 
-	Records(zone string) ([]Record, error)
-	WriteRecord(zone string, oldRecord, record Record) error
-	DeleteRecord(zone string, record Record) error
+	Records(zone Zone) ([]Record, error)
+	WriteRecord(zone Zone, oldRecord, record Record) error
+	DeleteRecord(zone Zone, record Record) error
 }

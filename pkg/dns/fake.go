@@ -46,33 +46,33 @@ func (f *FakeDNSService) DeleteZone(zone Zone) error {
 	return nil
 }
 
-func (f *FakeDNSService) Records(zone string) ([]Record, error) {
+func (f *FakeDNSService) Records(zone Zone) ([]Record, error) {
 	result := []Record{}
-	for _, value := range f.RecordMap[zone] {
+	for _, value := range f.RecordMap[zone.Name] {
 		result = append(result, value)
 	}
 	return result, nil
 }
 
-func (f *FakeDNSService) WriteRecord(zone string, oldRecord, record Record) error {
-	if _, exists := f.RecordMap[zone]; !exists {
-		f.RecordMap[zone] = map[string]Record{}
+func (f *FakeDNSService) WriteRecord(zone Zone, oldRecord, record Record) error {
+	if _, exists := f.RecordMap[zone.Name]; !exists {
+		f.RecordMap[zone.Name] = map[string]Record{}
 	}
-	_, exists := f.RecordMap[zone][record.RecordName()]
+	_, exists := f.RecordMap[zone.Name][record.RecordName()]
 	if oldRecord != nil && !exists {
 		return fmt.Errorf("record doesn't exist!")
 	}
 	if oldRecord == nil && exists {
 		return fmt.Errorf("conflict, record exists")
 	}
-	f.RecordMap[zone][record.RecordName()] = record
+	f.RecordMap[zone.Name][record.RecordName()] = record
 	return nil
 }
 
-func (f *FakeDNSService) DeleteRecord(zone string, record Record) error {
-	if _, exists := f.RecordMap[zone]; !exists {
+func (f *FakeDNSService) DeleteRecord(zone Zone, record Record) error {
+	if _, exists := f.RecordMap[zone.Name]; !exists {
 		return fmt.Errorf("zone doesn't exist!")
 	}
-	delete(f.RecordMap[zone], record.RecordName())
+	delete(f.RecordMap[zone.Name], record.RecordName())
 	return nil
 }

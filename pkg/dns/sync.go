@@ -10,7 +10,7 @@ func Sync(service Service, zone Zone, records []Record) error {
 		return err
 	}
 	glog.Info("Syncing records.")
-	if err := syncRecords(service, zone.Name, zone.DNSName, records); err != nil {
+	if err := syncRecords(service, zone, records); err != nil {
 		return err
 	}
 	return nil
@@ -39,8 +39,8 @@ func syncZone(service Service, zone Zone) error {
 	return nil
 }
 
-func syncRecords(service Service, zoneName, zoneDNS string, records []Record) error {
-	existingRecords, err := service.Records(zoneName)
+func syncRecords(service Service, zone Zone, records []Record) error {
+	existingRecords, err := service.Records(zone)
 	if err != nil {
 		return err
 	}
@@ -50,13 +50,13 @@ func syncRecords(service Service, zoneName, zoneDNS string, records []Record) er
 		if existingRecord != nil {
 			if recordIsDifferent(record, *existingRecord) {
 				glog.V(2).Infof("Updating record: %v", record)
-				if err := service.WriteRecord(zoneName, *existingRecord, record); err != nil {
+				if err := service.WriteRecord(zone, *existingRecord, record); err != nil {
 					return err
 				}
 			}
 		} else {
 			glog.V(2).Infof("Creating record: %v", record)
-			if err := service.WriteRecord(zoneName, nil, record); err != nil {
+			if err := service.WriteRecord(zone, nil, record); err != nil {
 				return err
 			}
 		}
@@ -64,12 +64,12 @@ func syncRecords(service Service, zoneName, zoneDNS string, records []Record) er
 	for _, record := range existingRecords {
 		desiredRecord := findRecord(record.RecordName(), records)
 		// Maintain the apex NS record no matter what.
-		if record.RecordName() == zoneDNS {
+		if record.RecordName() == zone.DNSName {
 			continue
 		}
 
 		if desiredRecord == nil {
-			if err := service.DeleteRecord(zoneName, record); err != nil {
+			if err := service.DeleteRecord(zone, record); err != nil {
 				return err
 			}
 		}

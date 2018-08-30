@@ -79,7 +79,7 @@ func (g *googleDNS) DeleteZone(zone dns.Zone) error {
 	return g.client.ManagedZones.Delete(g.project, zone.Name).Do()
 }
 
-func (g *googleDNS) WriteRecord(zone string, oldRecord, newRecord dns.Record) error {
+func (g *googleDNS) WriteRecord(zone dns.Zone, oldRecord, newRecord dns.Record) error {
 	recordSet := makeRecordSet(newRecord)
 	change := cloud_dns.Change{
 		Additions: []*cloud_dns.ResourceRecordSet{recordSet},
@@ -88,12 +88,12 @@ func (g *googleDNS) WriteRecord(zone string, oldRecord, newRecord dns.Record) er
 		deleteSet := makeRecordSet(oldRecord)
 		change.Deletions = []*cloud_dns.ResourceRecordSet{deleteSet}
 	}
-	_, err := g.client.Changes.Create(g.project, zone, &change).Do()
+	_, err := g.client.Changes.Create(g.project, zone.Name, &change).Do()
 	return err
 }
 
-func (g *googleDNS) Records(zone string) ([]dns.Record, error) {
-	list, err := g.client.ResourceRecordSets.List(g.project, zone).Do()
+func (g *googleDNS) Records(zone dns.Zone) ([]dns.Record, error) {
+	list, err := g.client.ResourceRecordSets.List(g.project, zone.Name).Do()
 	if err != nil {
 		return nil, err
 	}
@@ -106,11 +106,11 @@ func (g *googleDNS) Records(zone string) ([]dns.Record, error) {
 	return result, nil
 }
 
-func (g *googleDNS) DeleteRecord(zone string, record dns.Record) error {
+func (g *googleDNS) DeleteRecord(zone dns.Zone, record dns.Record) error {
 	change := cloud_dns.Change{
 		Deletions: []*cloud_dns.ResourceRecordSet{makeRecordSet(record)},
 	}
-	_, err := g.client.Changes.Create(g.project, zone, &change).Do()
+	_, err := g.client.Changes.Create(g.project, zone.Name, &change).Do()
 	return err
 }
 
