@@ -1,0 +1,15 @@
+zone:
+  name: test
+  dnsName: sync.metaparticle.io.
+  description: test-sync is changed
+records:
+- kind: A
+  ttl: 350
+  name: www.sync.metaparticle.io.
+  addresses:
+  - 1.2.3.4
+  - 2.3.4.5
+- kind: CNAME
+  ttl: 200
+  name: cname.sync.metaparticle.io.
+  canonicalName: foobar2.example.com.
