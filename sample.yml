@@ -1,15 +1,15 @@
 zone:
   name: test
-  dnsName: sync.metaparticle.io.
-  description: test-sync is changed
+  dnsName: sync.contuso.io.
+  description: this is an example
 records:
 - kind: A
   ttl: 350
-  name: www.sync.metaparticle.io.
+  name: www.sync.contuso.io.
   addresses:
   - 1.2.3.4
   - 2.3.4.5
 - kind: CNAME
   ttl: 200
-  name: cname.sync.metaparticle.io.
-  canonicalName: foobar2.example.com.
+  name: cname.sync.contuso.io.
+  canonicalName: foobar.example.com.
