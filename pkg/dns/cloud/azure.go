@@ -2,6 +2,7 @@ package cloud
 
 import (
 	"context"
+	"os"
 
 	azuredns "github.com/azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns"
 	"github.com/brendandburns/dns-sync/pkg/dns"
@@ -16,10 +17,11 @@ type azureDNS struct {
 var _ = dns.Service(&azureDNS{})
 
 func NewAzureDNSService() (dns.Service, error) {
-	subscription := "foo"
+	subscription := os.Getenv("AZURE_SUBSCRIPTION")
 	service := &azureDNS{
 		zonesClient:   azuredns.NewZonesClient(subscription),
 		recordsClient: azuredns.NewRecordSetsClient(subscription),
+		resourceGroup: os.Getenv("AZURE_RESOURCEGROUP"),
 	}
 	return service, nil
 }

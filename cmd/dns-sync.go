@@ -13,6 +13,7 @@ import (
 
 var (
 	configFile = flag.String("config", "", "Path to config file")
+	cloudDNS   = flag.String("cloud", "", "Which cloud DNS provider to use, currently 'google' or 'azure'")
 )
 
 func main() {
@@ -32,7 +33,12 @@ func main() {
 
 	glog.V(4).Infof("LoadedConfig: %v\n", config)
 
-	svc, err := cloud.NewGoogleCloudDNSService()
+	var svc dns.Service
+	if len(*cloudDNS) == 0 || *cloudDNS == "google" {
+		svc, err = cloud.NewGoogleCloudDNSService()
+	} else if *cloudDNS == "azure" {
+		svc, err = cloud.NewAzureDNSService()
+	}
 	if err != nil {
 		log.Fatal(err.Error())
 	}
