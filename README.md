@@ -4,6 +4,12 @@ A simple declarative tool for managing DNS records.
 
 DNS Sync is _alpha_ and under active development.
 
+# Downloads
+
+   * [Linux](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/linux-amd64.tgz)
+   * [OS X](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/darwin-amd64.tgz)
+   * [Windpws](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/windows-amd64.zip)
+
 # Usage
 
 Create a declarative YAML or JSON file:
