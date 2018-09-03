@@ -8,7 +8,7 @@ DNS Sync is _alpha_ and under active development.
 
    * [Linux](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/linux-amd64.tgz)
    * [OS X](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/darwin-amd64.tgz)
-   * [Windpws](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/windows-amd64.zip)
+   * [Windows](https://github.com/brendandburns/dns-sync/releases/download/0.1.0/windows-amd64.zip)
 
 # Usage
 
